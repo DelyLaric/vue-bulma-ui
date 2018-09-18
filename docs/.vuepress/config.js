@@ -1,11 +1,16 @@
 module.exports = {
   title: 'Vue bulma UI',
-  description: '基于 bulma ui 的 Vue。 组件库',
-  base: '/', // 设置站点根路径
+  description: '基于 bulma ui 的 Vue.js 组件库',
+  base: '/',
+  markdown: {
+    config: md => {
+      require('./markdown/vueCodeDemoBuilder')(md)
+    }
+  },
   themeConfig: {
     nav: [
       { text: '指南', link: '/guide/' },
-      { text: '组件', link: '/components/' },
+      { text: '组件', link: '/components/button' },
     ],
     sidebar: [
       {
@@ -17,5 +22,12 @@ module.exports = {
         ]
       }
     ]
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        'vue$': 'vue/dist/vue.esm.js'
+      }
+    }
   }
 }
