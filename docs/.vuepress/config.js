@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'Vue bulma UI',
-  description: '基于 bulma ui 的 Vue.js 组件库',
+  title: 'Vue bulma demo',
+  description: '基于Bulma.css封装的一些Vue Component Demo',
   base: '/',
   markdown: {
     config: md => {
@@ -10,15 +10,24 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: '指南', link: '/guide/' },
-      { text: '组件', link: '/components/button' },
+      { text: '组件', link: '/components/icon' },
     ],
     sidebar: [
       {
-        title: '基础元素',
+        title: 'Element',
         collapsable: false,
         children: [
+          '/components/icon',
           '/components/button',
-          '/components/box'
+          '/components/columns'
+        ]
+      },
+      {
+        title: 'Form',
+        collapsable: false,
+        children: [
+          '/components/form',
+          '/components/checkbox'
         ]
       }
     ]

@@ -1,29 +1,18 @@
 <template>
   <div class="box demo-container">
-    <div v-if="$slots.summary" class="code-summary">
-      <slot name="summary" />
-    </div>
-
-    <div
-      v-if="$slots.summary"
-      class="code-block-divider"
-    ></div>
-
     <div class="code-demo">
       <component :is="component" />
     </div>
 
     <div class="code-container">
-      <transition>
-        <pre
-          v-show="isShowCode"
-          v-highlightjs="sourceCode"
-        ><code class="javascript"></code></pre>
-      </transition>
+      <div v-if="hasCodeShow" class="code-block-divider"/>
 
-      <div class="code-block-divider"></div>
+      <slot v-if="hasCodeShow"/>
+
+      <div class="code-block-divider"/>
 
       <div
+        v-if="collapsable"
         class="code-toggle-button"
         @click="isShowCode = !isShowCode">
         <span v-show="isShowCode">⬆</span>
@@ -40,7 +29,8 @@ export default {
   name: 'VueCodeDemo',
 
   props: {
-    code: String
+    code: String,
+    collapsable: Boolean
   },
 
   data() {
@@ -51,11 +41,24 @@ export default {
     };
   },
 
+  computed: {
+    hasCodeShow () {
+      if (!this.collapsable) return true
+
+      return this.isShowCode
+    }
+  },
+
   methods: {
     buildCodeToComponent (code) {
-      const component = {}
-
       const SFC = parseComponent(this.sourceCode)
+      let component = {}
+
+      if (SFC.script) {
+        component = eval(
+          SFC.script.content.replace('export default', 'component =')
+        )
+      }
 
       if (SFC.template) {
         component.template = SFC.template.content
@@ -63,14 +66,12 @@ export default {
         component.template = `<div style="width: 100%; height: 100%">${this.sourceCode}</div>`
       }
 
-      if (SFC.script) {
-        Object.assign(component, eval(
-          SFC.script.content.replace('export default', 'component =')
-        ))
-      }
-
       return component
     }
+  },
+
+  created () {
+    this.component = this.buildCodeToComponent(unescape(this.code.trim()))
   },
 
   watch: {
@@ -95,7 +96,7 @@ export default {
 .code-demo,
 .code-summary {
   display: flex;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .code-container {
