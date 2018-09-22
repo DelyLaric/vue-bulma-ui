@@ -1,5 +1,5 @@
 ---
 home: true
 actionText: 组件
-actionLink: /components/button
+actionLink: /components/layout/columns
 ---
