@@ -1,7 +1,7 @@
-import Button from './components/button'
-import Column from './components/column'
-import Form from './components/form'
-import Icon, { config } from './components/icon'
+import Button from './button'
+import Column from './column'
+import Form from './form'
+import Icon, { config } from './icon'
 
 export default {
   use: {
